@@ -126,3 +126,7 @@ composer require eduardokum/laravel-mail-auto-embed
 composer require enshrined/svg-sanitize
 composer require intervention/image
 ```
+
+- `intervention/image` just gives you a really nice API for resizing and manipulating uploaded images
+- `enshrined/svg-sanitize` allows you to strip XSS from user uploaded SVG files and must be used if you allow users to upload files
+
