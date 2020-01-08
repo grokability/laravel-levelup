@@ -2,7 +2,7 @@
 
 ### Your .env file
 
-Make sure all of the values in your `.env` are single words with no spaces or special characters OR make sure they're enclosed in quotes. For examnple:
+Make sure all of the values in your `.env` are single words with no spaces or special characters OR make sure they're enclosed in quotes. For example:
 
 ```
 MAIL_FROM_NAME=Snipe-IT Asset Management
@@ -47,7 +47,7 @@ composer require --dev roave/security-advisories:dev-master
 
 ```
 - `barryvdh/laravel-debugbar` is the most critical debugging tool we use
-- `laravel/tinker` allows you to interact with your apps models, etc via a command line REPL tool
+- `laravel/tinker` allows you to interact with your app models, etc via a command line REPL tool
 - `watson/validating` provides model level validation. While not required for every project, I can't see why you wouldn't use it.
 - `roave/security-advisories` is a package that checks for known vulnerabilities in the packages you're trying to use or are currently using.
 
