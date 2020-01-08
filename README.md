@@ -1,6 +1,22 @@
 ## General Guidelines
 
-### 
+### General Tips
+
+## Your .env file
+
+Make sure all of the values in your `.env` are single words with no spaces or special characters OR make sure they're enclosed in quotes. For examnple:
+
+```
+MAIL_FROM_NAME=Snipe-IT Asset Management
+```
+
+will break things.
+
+```
+MAIL_FROM_NAME='Snipe-IT Asset Management'
+```
+
+is safe.
 
 
 ### Base Composer
