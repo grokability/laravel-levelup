@@ -1,6 +1,11 @@
+## General Guidelines
+
+### 
+
+
 ### Base Composer
 
-This is a very basic example of a composer file that will install Laravel and most of the common libraries we'd want to use in almost any project. Obviously, depending on the needs of the specific project. 
+This is a very basic example of a composer file that will install Laravel and most of the common libraries we'd want to use in almost any project. Obviously, depending on the needs of the specific project. The easiest way to implement this in a new project will be to `laravel new projectname`, let it install as usual, and then swap out the composer file. 
 
 ```json
 {
@@ -12,11 +17,6 @@ This is a very basic example of a composer file that will install Laravel and mo
     "require": {
     "php": ">=7.1.2",
     "barryvdh/laravel-debugbar": "^3.2",
-    "doctrine/cache": "^1.8",
-    "doctrine/common": "^2.10",
-    "doctrine/dbal": "2.9.0",
-    "doctrine/inflector": "^1.3",
-    "doctrine/instantiator": "^1.2",
     "eduardokum/laravel-mail-auto-embed": "^1.0",
     "enshrined/svg-sanitize": "^0.13.0",
     "erusev/parsedown": "^1.7",
@@ -81,4 +81,48 @@ This is a very basic example of a composer file that will install Laravel and mo
 }
 
 
+```
+
+If you run into conflicts (for example, if your version of Laravel is later than the one here), you can manually include these libraries using:
+
+### Bare Minimum
+
+```
+composer require barryvdh/laravel-debugbar
+composer require laravel/tinker
+composer require watson/validating
+
+```
+- `barryvdh/laravel-debugbar` is the most critical debugging tool we use
+- `laravel/tinker` allows you to interact with your apps models, etc via a command line REPL tool
+- `watson/validating` provides model level validation. While not required for every project, I can't see why you wouldn't use it.
+
+
+### If you need/want an API
+
+```
+composer require laravel/passport
+```
+
+### If you're using authentication
+
+```
+composer require unicodeveloper/laravel-password
+composer require schuppo/password-strength
+```
+
+### If you're using email
+
+```
+composer require eduardokum/laravel-mail-auto-embed
+```
+
+`laravel-mail-auto-embed` just automatically embeds images like logos, etc in your HTML emails so they don't break if folks are behind a firewall or the app server isn't accessible.
+
+
+### If you're using file uploads
+
+```
+composer require enshrined/svg-sanitize
+composer require intervention/image
 ```
