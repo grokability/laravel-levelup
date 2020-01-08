@@ -24,7 +24,9 @@ In Laravel, you create a migration by typing `php artisan make:migration name_of
 
 The `up()` method in that migration file is where you put the Laravel code to create/modify tables, and the `down()` method is where you put the code to reverse it. For example, if you were creating a new table named `florms`, the `up()` method would contain the code to create the `florms` table, and the `down()` method would contain the code to drop that new table. Each migration should have an `up()` and a `down()`, and every `up()` should be reversible by the `down()`.
 
-Once you've written your `up()` code, save that file, then execute `php artisan migrate`. You'll see the migration get executed in the screen output. If you need to make a change to that migration before you commit, you can run `php artisan db:rollback` and reverse that migration. 
+Once you've written your `up()` code, save that file, then execute `php artisan migrate`. You'll see the migration get executed in the screen output. If you need to make a change to that migration before you commit, you can run `php artisan db:rollback` and reverse that migration, make your changes, and run `php artisan migrate` again. Once you're satisfied with your schema, you should commit and push that change.
+
+When you execute `php artisan migrate`, Laravel will automatically populate the built-in `migrations` table to tell the application which migrations have already been run - which means a migration will never be run twice unless it throws an error while executing the migration. 
 
 _Always use migrations, and never edit a database migration that has already been checked in and pushed_. 
 
@@ -87,4 +89,5 @@ When considering using a package that isn't well known, it's always a good idea 
 
 - how recently has the package been updated?
 - what do their Github issues look like? Tons of open issues with no response? Dig deeper into the closed issues too - it could just be that there is a lot of activity, and they are still actively participating but the rate of new issues is higher than their close rate (which is fine - we just want to know they're still active)
-- 
+- Is the package trying to do too much or too little? Each new package is a new dependency and a new potential security issue. If the package just provides some syntactic sugar, you can probably skip it. If it's trying to do a million things, you probably *should* skip it, since if it becomes defunct, you've now based a lot of your functionality on some third-party package and you're gonna have a bad time. 
+
