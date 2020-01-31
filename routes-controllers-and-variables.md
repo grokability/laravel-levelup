@@ -4,7 +4,7 @@ First let's recap some of the stuff we've gone over at a VERY high level regardi
 
 - Models: Models are for business logic. What does each object need, what does it mean, how does it relate to the other objects? You lay down the important relationships between objects here. If a `User` `hasMany` `Items`, this is where you define that.
 - Views: the front-endy bits. This is where your HTML goes. This (other than *maybe* some JS components) is the ONLY place HTML lives in your entire app ecosystem.
-- Controllers: Controllers should take in web requests (via API of your application's GUI), do a few small things (sometimes validation, sometimes normalizing data that could be presented in a variety of ways but can only be handled one way in the database, etc), and then return info or redirect you someone. These should be as lean as possible. 
+- Controllers: Controllers should take in web requests (via API or your application's GUI), do a few small things (sometimes validation, sometimes normalizing data that could be presented in a variety of ways but can only be handled one way in the database, etc), and then return info or redirect you someone. These should be as lean as possible. 
 - Routes: (not an `M`, `V`, or a `C`, but still usually pretty important) This is the air traffic controller for all web requests that come in, and it actually matters for the purposes of this lesson. This is how the app tells the webserver which controller and controller method it should be looking at if someone types in a particular URL. Think of routes as your very first layer of interaction with the user. 
 
 ### Let's Talk About Routes, Baby
@@ -225,4 +225,4 @@ Your MonstersController `show()` method would look like this:
     }
 ```    
 
-The names don't matter (except for you as the person who has to remember what you're passing around). The *comsistency* matters. 
+The names don't matter (except for you as the person who has to remember what you're passing around). The *consistency* matters. 
