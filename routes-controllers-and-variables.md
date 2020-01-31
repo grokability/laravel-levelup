@@ -5,11 +5,11 @@ First let's recap some of the stuff we've gone over at a VERY high level regardi
 - Models: Models are for business logic. What does each object need, what does it mean, how does it relate to the other objects? You lay down the important relationships between objects here. If a `User` `hasMany` `Items`, this is where you define that.
 - Views: the front-endy bits. This is where your HTML goes. This (other than *maybe* some JS components) is the ONLY place HTML lives in your entire app ecosystem.
 - Controllers: Controllers should take in web requests (via API of your application's GUI), do a few small things (sometimes validation, sometimes normalizing data that could be presented in a variety of ways but can only be handled one way in the database, etc), and then return info or redirect you someone. These should be as lean as possible. 
-- Routes: (not an `M`, `V`, or a `C`, but still usually pretty important) This is the air traffic controller for all web requests that come in, and it actually matters for the purposes of this lesson. This is how the app tells the webserver which controller and controller method it should be looking at if someone types in a particular URL. Think of routes as your very first laywer of interaction with the user. 
+- Routes: (not an `M`, `V`, or a `C`, but still usually pretty important) This is the air traffic controller for all web requests that come in, and it actually matters for the purposes of this lesson. This is how the app tells the webserver which controller and controller method it should be looking at if someone types in a particular URL. Think of routes as your very first layer of interaction with the user. 
 
 ### Let's Talk About Routes, Baby
 
-I just mentioned that routes are basically the air traffic controllers in an MCV framework, but what does that really mean? Routes take HTTP requests - as in, the things people type into their browser - and figure out where to direct that request. 
+I just mentioned that routes are basically the air traffic controllers in an MVC framework, but what does that really mean? Routes take HTTP requests - as in, the things people type into their browser - and figure out where to direct that request. 
 
 Let's look at a really simple route declaration:
 
@@ -50,9 +50,11 @@ The entry in the `routes` file would probably look something like this:
 
 ```php
     Route::get('monsters', [
-            'uses' => 'MonstersController@show'
+            'uses' => 'MonstersController@index'
     ]);
 ```
+
+We can talk about indexes later - it's one of those words in tech that has 100 meanings. For our purposes here, it's a placeholder methd that would *probably* display a list of monsters. But the method name doesn't matter exactly yet.
 
 #### `POST` requests:
 
@@ -178,7 +180,7 @@ So in a  `monsterkillers.com/monsters/2` situation - since you're not passing an
 
 The answer is route paramaters. 
 
-If we want variables to be part of the URL *path* (`foo/bar/blah/baz`), not parameters we tack onto the "normnal" URL (`?foo=1&bar=2`), we can use route parameters.
+If we want variables to be part of the URL *path* (`foo/bar/blah/baz`), not parameters we tack onto the "normal" URL (`?foo=1&bar=2`), we can use route parameters.
 
 An example of our route for something like `monsterkillers.com/monsters/2` could look like this:
 
@@ -188,6 +190,18 @@ An example of our route for something like `monsterkillers.com/monsters/2` could
             'uses' => 'MonstersController@show'
     ]);
 ```
+
+This tells the application to look at `MonsterControllers.php`, and to look at the `show()` method within that `MonsterControllers.php` file, and to pass that method *something* that we assign the name `id`. We assigned that name in the route - and that name doesn't matter. Could be `Route::get('monsters/{id}'`, could be `Route::get('monsters/{farts}'`, could be `Route::get('monsters/{monsterId}'` - that doesn't matter - what matters is that we've made a route parameter, and the only way the Controller method knows what that value is is by what we call it in the route definition.
+
+So if you decided to make that route:
+
+
+```php
+    Route::get('monsters/{blahblahblah}', [
+            'uses' => 'MonstersController@show'
+    ]);
+```
+
 
 And our Controller `show()` method that the above route request would be accessing would look like this:
 
@@ -200,16 +214,6 @@ And our Controller `show()` method that the above route request would be accessi
 ```    
 
 
-This tells the application to look at `MonsterControllers.php`, and to look at the `show()` method within that `MonsterControllers.php` file, and to pass that method *something* that we assign the name `id`. We assigned that name in the route - and that name doesn't matter. Could be `Route::get('monsters/{id}'`, could be `Route::get('monsters/{farts}'`, could be `Route::get('monsters/{monsterId}'` - that doesn't matter - what matters is that we've made a route parameter, and the only way the Controller method knows what that value is is by what we call it in the route definition.
-
-So if you decided to make that route:
-
-
-```php
-    Route::get('monsters/{blahblahblah}', [
-            'uses' => 'MonstersController@show'
-    ]);
-```
 
 Your MonstersController `show()` method would look like this:
 
