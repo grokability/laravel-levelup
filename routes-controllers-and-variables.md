@@ -30,9 +30,26 @@ For example, you wouldn't do:
 
 Because that means that I (as the person with the web browser) might be able to arbirtraily change the name of that Monster - and your app UI might not want that to happen. For example, if in the form that I should have been using, you had a dropdown menu that gave me three choices: `Sleestak`, `Yeti`, and `Bunyip`, I (as the person using the web browser to modify requests outside of your form, because I can because they are `GET` requests) can now potentially inject in whatever arbirary value I want for the name of this monster. It means I could edit an existing monster's name, potentially create new monsters name whatever I want, etc. There are other things we can do to prevent bad/ignorant actors from doing stuff like this, but the easist one is to never let people modify data using a `GET` request. 
 
+The entry in the `routes` file would probably look something like this:
+
+```php
+    Route::get('monsters', [
+            'uses' => 'MonstersController@show'
+    ]);
+```
+
 #### `POST` requests:
 
+
 This is the *most* common type of HTTP request for forms. For the reasons above, and a few more. In `POST` requests, if we're using a modern framework, something called a CSRF token is required. CSRF stands for Cross Site Request Forgery, and that token's job is to make sure that the form that's being posted to the "saving" endpoint on your system is actually authorized to do so. Most modern frameworks *require* a CSRF token, and thankfully they handle a lot of the implementation for you. Frameworks like Laravel, for example, require you to make an *exception* if you want to POST a form without a CSRF token. That's a good thing. That means that if you forget to implement one and try to test out your form, it won't work.
+
+A typical "save" `POST` request for in your routes might look like this:
+
+```php
+    Route::post('monsters', [
+            'uses' => 'MonstersController@create'
+    ]);
+```
 
 #### URL-scoped Requests
 
@@ -119,3 +136,60 @@ And now the `POST` handler in the controller:
         return redirect()->back()->with('success', 'Saved!');
     }
 ```
+
+### URL Path variables
+
+Okay, so now we've addressed user-submitted values via `GET` and `POST`, and hopefully you understand the difference. There is one more use-case that is pretty common in frameworks, which we talked about above. The old `monsterkillers.com/monsters/2` thing. If we're not actually creating directories on the fly for each new monster, how are we passing that data to a route or a controller so that we can actually use it?
+
+We do this via routes. 
+
+In the routes you've seen above, everything is pretty straightforward. Hit a URL, get sent to a controller and then either return new data (usually via API only), return a blade view, or redirect the user. 
+
+So in a  `monsterkillers.com/monsters/2` situation - since you're not passing anything via parameter (aka  `monsterkillers.com/monsters?id=2` and you're only *getting* data, not changing it - how are we even doing this?
+
+The answer is route paramaters. 
+
+If we want variables to be part of the URL *path* (`foo/bar/blah/baz`), not parameters we tack onto the "normnal" URL (`?foo=1&bar=2`), we can use route parameters.
+
+An example of our route for something like `monsterkillers.com/monsters/2` could look like this:
+
+
+```php
+    Route::get('monsters/{id}', [
+            'uses' => 'MonstersController@show'
+    ]);
+```
+
+And our Controller `show()` method that the above route request would be accessing would look like this:
+
+```php
+    public function show($id)
+    {
+        $monster = Monster::findOrFail($id);
+        return $monster;
+    }
+```    
+
+
+This tells the application to look at `MonsterControllers.php`, and to look at the `show()` method within that `MonsterControllers.php` file, and to pass that method *something* that we assign the name `id`. We assigned that name in the route - and that name doesn't matter. Could be `Route::get('monsters/{id}'`, could be `Route::get('monsters/{farts}'`, could be `Route::get('monsters/{monsterId}'` - that doesn't matter - what matters is that we've made a route parameter, and the only way the Controller method knows what that value is is by what we call it in the route definition.
+
+So if you decided to make that route:
+
+
+```php
+    Route::get('monsters/{blahblahblah}', [
+            'uses' => 'MonstersController@show'
+    ]);
+```
+
+Your MonstersController `show()` method would look like this:
+
+```php
+    public function show($blahblahblah)
+    {
+        $monster = Monster::findOrFail($blahblahblah);
+        return $monster;
+    }
+```    
+
+The names don't matter (except for you as the person who has to remember what you're passing around). The *comsistency* matters. 
