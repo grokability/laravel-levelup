@@ -7,6 +7,22 @@ First let's recap some of the stuff we've gone over at a VERY high level regardi
 - Controllers: Controllers should take in web requests (via API of your application's GUI), do a few small things (sometimes validation, sometimes normalizing data that could be presented in a variety of ways but can only be handled one way in the database, etc), and then return info or redirect you someone. These should be as lean as possible. 
 - Routes: (not an `M`, `V`, or a `C`, but still usually pretty important) This is the air traffic controller for all web requests that come in, and it actually matters for the purposes of this lesson. This is how the app tells the webserver which controller and controller method it should be looking at if someone types in a particular URL. Think of routes as your very first laywer of interaction with the user. 
 
+### Let's Talk About Routes, Baby
+
+I just mentioned that routes are basically the air traffic controllers in an MCV framework, but what does that really mean? Routes take HTTP requests - as in, the things people type into their browser - and figure out where to direct that request. 
+
+Let's look at a really simple route declaration:
+
+```php
+    Route::get('monsters', [
+            'uses' => 'MonstersController@show'
+    ]);
+```
+
+The `Route::get()` part of the code above is what tells you that this is:
+
+1) This should be *invoked* by `<yourrootdomain.com>/monsters`, AND it's a `GET` request (more on that just below)
+2) This should *handled* by your `MonstersController.php`, in the `show()` method.
 
 I'll take a step back and look very briefly at HTTP requests. This part matters because you need to understand the difference in order to create your routes, and you can't invoke your controllers without having defined routes for them. 
 
@@ -64,7 +80,7 @@ If we didn't know anything past what we've already discussed, I'd have posited t
     - /3
     - /4
     
-That's a really natural thing to assume, given what most folks know about web servers, but it wouldn't be correct (or practical) in this context. In most of what we do in a framework app, we're not dealing with the file system as much as the database, so when we create a new monster with an ID of 5, we're *not* writing new directories. We've added a new record to the database, and have used some of the frmework magic to just make it look like we wrote new directories. 
+That's a really natural thing to assume, given what most folks know about web servers, but it wouldn't be correct (or practical) in this context. In most of what we do in a framework app, we're not dealing with the file system as much as the database, so when we create a new monster with an ID of 5, we're *not* writing new directories. We've added a new record to the database, and have used some of the framework magic to just make it look like we wrote new directories. 
 
 So the next question is - wait, what? How is that possible? Everything I understood about URL paths implied directories and files. 
 
@@ -83,8 +99,21 @@ A base experiment with this would be to create a one-field form and a submit but
 Let's make an HTML form field for the monster's name, called `name`, submit that form (which gets submitted to the route you defined for your `POST`, because we're now changing data) and in your `POST` form handler, let's also do this:
 
 
-```
-\Log::debug(print_r($request, true));
+```php
+    public function store(Request $request)
+    {
+        $monster = new Monster; // This is referring to the Monster model
+        $monster->fill($request->all());
+        \Log::debug($request); // <-- THIS will show you in your log files what was posted
+
+        // if the save didn't work
+        if ($monster->save()) {
+            return redirect()->with('errors', 'That save didn't work.');
+        }
+        
+        // Saved worked. These situations typically need more nuance than this, but it's a good enough start.
+        return redirect()->back()->with('success', 'Saved!');
+    }
 ```
 
 (The PHP method `print_r()` will dump your arrays and objects, and the optional variable `true` means display the contents, versus returning true or false.)
