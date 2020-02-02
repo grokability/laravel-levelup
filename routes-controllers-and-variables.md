@@ -109,7 +109,7 @@ Let's make an HTML form field for the monster's name, called `name`, submit that
         \Log::debug($request); // <-- THIS will show you in your log files what was posted
 
         // if the save didn't work
-        if ($monster->save()) {
+        if (!$monster->save()) {
             return redirect()->with('errors', 'That save didn't work.');
         }
         
@@ -159,7 +159,7 @@ And now the `POST` handler in the controller:
         $monster->fill($request->all());
 
         // if the save didn't work
-        if ($monster->save()) {
+        if (!$monster->save()) {
             return redirect()->with('errors', 'That save didn't work.');
         }
         
