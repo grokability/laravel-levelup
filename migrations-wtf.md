@@ -68,7 +68,7 @@ If the migration fails for any reason, no record will be added to that `migratio
 If you need to roll back the migration, you would run:
 
 ```
-php artisan db:rollback
+php artisan migrate:rollback
 ```
 
 This undoes the most recent batch of migrations, and this is why your `down()` method is really important. When you roll back, Laravel will try to execute the code in the `down()` method, which should reverse the change you made in the `up()` method. If it doesn't exactly undo that change, you will likely see errors when you try to migrate again.
