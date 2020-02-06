@@ -61,7 +61,7 @@ php artisan migrate
 
 If you're in production mode in your app, it will ask you if you're sure you want to make the change. If you're in local or develop mode, it won't. Artisan will then try to execute the migration, and if it does so successfully, it will show you a list of all of the migrations that were executed. At the same time behind the scenes, it adds at least one record to the `migrations` table which consists of the filename (`TIMESTAMP_some_short_description_of_the_change`) and the "batch" number. 
 
-This is how Laravel knows not to run the same migration twice. This also means you should NEVER change the filename of a migration after it's been committed or run, since it will see that renamed migration file as a new migration and will try to execxute it again, which will almost certainly result in an error.
+This is how Laravel knows not to run the same migration twice. This also means you should NEVER change the filename of a migration after it's been committed or run, since it will see that renamed migration file as a new migration and will try to execute it again, which will almost certainly result in an error.
 
 If the migration fails for any reason, no record will be added to that `migrations` table for that migration.
 
