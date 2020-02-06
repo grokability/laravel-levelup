@@ -18,19 +18,9 @@ is safe.
 
 ### Creating/editing database schema
 
-Migrations are the process through which all major frameworks (not just PHP) handle creating and modifying database schemas. This allows developers to make sure their schemas are in sync with each other (and staging/production).
+Migrations are the process through which all major frameworks (not just Laravel/PHP) handle creating and modifying database schemas. This allows developers to make sure their schemas are in sync with each other (and staging/production).
 
-In Laravel, you create a migration by typing `php artisan make:migration name_of_your_migration`. You then edit that newly generated file, which lives in `database/migrations` and make the changes you need to make, whether that's creating a new table or modifying an existing table. 
-
-The `up()` method in that migration file is where you put the Laravel code to create/modify tables, and the `down()` method is where you put the code to reverse it. For example, if you were creating a new table named `florms`, the `up()` method would contain the code to create the `florms` table, and the `down()` method would contain the code to drop that new table. Each migration should have an `up()` and a `down()`, and every `up()` should be reversible by the `down()`.
-
-Once you've written your `up()` code, save that file, then execute `php artisan migrate`. You'll see the migration get executed in the screen output. If you need to make a change to that migration before you commit, you can run `php artisan db:rollback` and reverse that migration, make your changes, and run `php artisan migrate` again. Once you're satisfied with your schema, you should commit and push that change.
-
-When you execute `php artisan migrate`, Laravel will automatically populate the built-in `migrations` table to tell the application which migrations have already been run - which means a migration will never be run twice unless it throws an error while executing the migration. 
-
-_Always use migrations, and never edit a database migration that has already been checked in and pushed_. 
-
-The reason for this is that if another developer has already pulled and run your migrations and you change a field type, field length, etc, they will have already executed your first schema change, so their schema will not match yours and things will break in bizarre and mysterious ways that will be difficult to debug. If you accidentally used the wrong field type, name, size, etc and need to change it, create a new migration and make the change there. 
+You can read [more about migrations here](https://github.com/grokability/laravel-levelup/blob/master/migrations-wtf.md).
 
 
 ## Base Composer Libraries
